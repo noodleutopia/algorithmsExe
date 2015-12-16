@@ -1,11 +1,11 @@
 package binary_tree;
 
 public class TreeNode {
-	int val;
+	public int val;
 	public TreeNode left;
 	public TreeNode right;
 
-	TreeNode(int x) {
+	public TreeNode(int x) {
 		val = x;
 	}
 }

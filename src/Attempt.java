@@ -80,5 +80,47 @@ public class Attempt {
 			}
 		}
 	}
+	
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p == null && q ==null) {
+        	return true;
+        } else if (p == null || q == null) {
+        	return false;
+        } else {
+        	if(p.val == q.val) {
+        		return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        	} else {
+        		return false;
+        	}
+        }
+    }
+    /**
+     * Wrong Answer!
+     * @param root
+     * @return
+     */
+    public TreeNode invertTree(TreeNode root) {
+        if(root == null) {
+        	return root;
+        } else if(root.left == null && root.right == null) {
+        	return root;
+        } else {
+        	//left or right is not null
+        	TreeNode newleft = invertTree(root.left);
+        	TreeNode newright = invertTree(root.right);
+        	if(newleft == null) {
+        		root.left = new TreeNode(newright.val);
+        		root.right = null;
+        	} else if(newright == null) {
+        		root.right = new TreeNode(newleft.val);
+        		root.left = null;
+        	} else {
+        		//left and right are both not null
+        		root.left = newright;
+        		root.right = newleft;
+        	}
+        }
+        return root;
+    }
 
 }
