@@ -19,6 +19,9 @@ public class Attempt {
 		System.out.println(isAnagram(s, t));
 	}
 
+	/**
+	 * PROBLEM 292
+	 */
 	private static boolean canWin(int n) {
 		if (n % 4 != 0) {
 			return true;
@@ -26,17 +29,17 @@ public class Attempt {
 			return false;
 		}
 	}
-
+	/**
+	 * PROBLEM 258
+	 */
 	public int addDigits(int num) {
 		if (num % 9 == 0) {
 			return 9;
 		}
 		return num % 9;
 	}
-
 	/**
-	 * Definition for a binary tree node. public class TreeNode { int val;
-	 * TreeNode left; TreeNode right; TreeNode(int x) { val = x; } }
+	 * PROBLEM 104
 	 */
 	public int maxDepth(TreeNode root) {
 		if (root == null) {
@@ -48,10 +51,8 @@ public class Attempt {
 		res += Math.max(lnodes, rnodes);
 		return res;
 	}
-
 	/**
-	 * Definition for singly-linked list. public class ListNode { int val;
-	 * ListNode next; ListNode(int x) { val = x; } }
+	 * PROBLEM 237
 	 */
 	public void deleteNode(ListNode node) {
 		if (node.next != null) {
@@ -63,7 +64,9 @@ public class Attempt {
 			}
 		}
 	}
-
+	/**
+	 * PROBLEM 283
+	 */
 	public void moveZeroes(int[] nums) {
 		int p1 = 0;
 		int p2 = p1;
@@ -86,7 +89,9 @@ public class Attempt {
 			}
 		}
 	}
-	
+	/**
+	 * PROBLEM 100
+	 */
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if(p == null && q ==null) {
         	return true;
@@ -100,7 +105,9 @@ public class Attempt {
         	}
         }
     }
-
+	/**
+	 * PROBLEM 226
+	 */
     public TreeNode invertTree(TreeNode root) {
         if(root == null) {
         	return root;
@@ -124,7 +131,9 @@ public class Attempt {
         }//
         return root;
     }
-    
+	/**
+	 * PROBLEM 242
+	 */
 	public static boolean isAnagram(String s, String t) {
 		if (s.length() != t.length()) {
 			return false;
@@ -146,5 +155,65 @@ public class Attempt {
 		}
 		return true;
 	}
+	/**
+	 * PROBLEM 217
+	 */
+    public boolean containsDuplicate(int[] nums) {
+        if(nums.length < 2) {
+        	return false;
+        }
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for(int i = 0; i < nums.length; i++) {
+        	if(!map.containsKey(nums[i])) {
+        		map.put(nums[i], 1);
+        	} else {
+        		return true;
+        	}
+        }
+        return false;
+    }
+    /**
+	 * PROBLEM 171
+	 */
+    public int titleToNumber(String s) {
+    	int result = 0;
+    	int lenth = s.length();
+    	for(int i = lenth -1; i > -1; i--) {
+    		result += Math.pow(26, (lenth - 1 - i)) * convert(s.charAt(i));
+    	}
+    	return result;
+    }
+    
+    int convert(char c) {
+    	return ((int)(c - 'A') + 1);
+    }
+    /**
+     * 168 WWW
+     */
+    //TODO:wrong answer
+    public String convertToTitle(int n) {
+    	if(n == 26) {
+    		return "Z";
+    	}
+    	StringBuilder sb = new StringBuilder("");
+        int i = 0;
+        while((int)(n / Math.pow(26, i)) > 0) {
+        	i++;
+        }
+        for(i--; i > -1; i--) {
+        	if(n % Math.pow(26, i) == 0) {
+        		if (n / Math.pow(26, i) != 0) {
+        			sb.append(reconvert((int)(n / Math.pow(26, i))));
+        		}
+        		n = (int)(n / Math.pow(26, i-1));
+        	}
+        	sb.append(reconvert((int)(n / Math.pow(26, i))));
+        	n = (int) (n % Math.pow(26, i));
+        }
+        return sb.toString();
+    }
 
+    char reconvert(int i) {
+    	return (char)(i - 1 + 'A');
+    }
 }
