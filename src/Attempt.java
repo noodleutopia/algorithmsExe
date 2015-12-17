@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import binary_tree.TreeNode;
@@ -118,10 +117,10 @@ public class Attempt {
         	TreeNode newleft = invertTree(root.left);
         	TreeNode newright = invertTree(root.right);
         	if(newleft == null) {
-        		root.left = new TreeNode(newright.val);
+        		root.left = newright;
         		root.right = null;
         	} else if(newright == null) {
-        		root.right = new TreeNode(newleft.val);
+        		root.right = newleft;
         		root.left = null;
         	} else {
         		//left and right are both not null
