@@ -199,18 +199,15 @@ public class Attempt {
 	/**
 	 * PROBLEM 168
 	 */
-	//TODO: 这题竟然想了很久，虽然AC但是还是没做出完美答案（事实上是错的）。
-	//其实是思路有问题。我总是想求出位数然后由高位向低位输出。其实反向输出比较好，不用求位数。
+	// TODO: 这题竟然想了很久，虽然AC但是还是没做出完美答案（事实上是错的）。
+	// 其实是思路有问题。我总是想求出位数然后由高位向低位输出。其实反向输出比较好，不用求位数。
 	public String convertToTitle(int n) {
 		StringBuilder sb = new StringBuilder("");
-		while(n > 0) {
-			sb.insert(0, (char)((n - 1) % 26 + 'A'));
+		while (n > 0) {
+			sb.insert(0, (char) ((n - 1) % 26 + 'A'));
 			n = (n - 1) / 26;
 		}
 		return sb.toString();
 	}
 
-	char reconvert(int i) {
-		return (char) (i - 1 + 'A');
-	}
 }
