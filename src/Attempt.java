@@ -4,6 +4,7 @@ import java.util.Map;
 
 import binary_tree.TreeNode;
 import linked_list.ListNode;
+import sortUtil.QuickSort;
 
 public class Attempt {
 
@@ -21,7 +22,7 @@ public class Attempt {
 	/**
 	 * PROBLEM 292
 	 */
-	private static boolean canWin(int n) {
+	public static boolean canWin(int n) {
 		if (n % 4 != 0) {
 			return true;
 		} else {
@@ -209,5 +210,32 @@ public class Attempt {
 		}
 		return sb.toString();
 	}
+
+	/**
+	 * PROBLEM 169
+	 */
+	// TODO: 这道题没有做出来。思路有问题。想用分治思想，但该题不能分成小块来做。找到这个比较好的答案，是用成对淘汰思想做的。
+	public int majorityElement(int[] nums) {
+		int candidate = 0;
+        int count = 0;
+        for(int i = 0; i < nums.length; i ++)
+        {
+            if(count == 0)
+            {
+                candidate = nums[i];
+                count = 1;
+            }
+            else
+            {
+                if(nums[i] == candidate)
+                    count ++;
+                else
+                    count --;
+            }
+        }
+        return candidate;
+	}
+	
+
 
 }
