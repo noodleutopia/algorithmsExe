@@ -217,7 +217,7 @@ public class Attempt {
 	// TODO: 这道题没有做出来。思路有问题。想用分治思想，但该题不能分成小块来做。找到这个比较好的答案，是用成对淘汰思想做的。
 	public int majorityElement(int[] nums) {
 		int candidate = 0;
-        int count = 0;
+        int count = 0;	//某个候选值的个数。当count 为0 的时候，换下一个候选值。
         for(int i = 0; i < nums.length; i ++)
         {
             if(count == 0)
@@ -235,7 +235,31 @@ public class Attempt {
         }
         return candidate;
 	}
-	
-
+	/**
+	 * PROBLEM 191
+	 */
+	//TODO:充分理解位运算！此题是说一个无符号整数，如果直接按求余统计，会把最高位的1当做正负号从而出错。
+	 // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+    	int count = 0;
+        while(n != 0) {
+        	count += n & 1;
+			n >>>= 1;
+        }
+        return count;
+        //竟然已经有现成的方法了：直接return Integer.bitCount(n);
+    }
+    /**
+	 * PROBLEM 235
+	 */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+		int temp = (root.val - p.val) * (root.val - q.val);
+		if (temp <= 0) {
+			return root;
+		} else {
+			return (root.val - p.val) > 0 ? lowestCommonAncestor(root.left, p, q) : lowestCommonAncestor(root.right, p, q);
+		}
+    }
+    
 
 }
