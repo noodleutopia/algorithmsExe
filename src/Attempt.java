@@ -4,7 +4,6 @@ import java.util.Map;
 
 import binary_tree.TreeNode;
 import linked_list.ListNode;
-import sortUtil.QuickSort;
 
 public class Attempt {
 
@@ -200,8 +199,8 @@ public class Attempt {
 	/**
 	 * PROBLEM 168
 	 */
-	// TODO: ���⾹Ȼ���˺ܾã���ȻAC���ǻ���û���������𰸣���ʵ���Ǵ��ģ���
-	// ��ʵ��˼·�����⡣�����������λ��Ȼ���ɸ�λ���λ�������ʵ��������ȽϺã�������λ����
+	// TODO: ���⾹Ȼ���˺ܾã���ȻAC���ǻ���û���������𰸣���ʵ���Ǵ�ģ���
+	// ��ʵ��˼·�����⡣�����������λ��Ȼ���ɸ�λ���λ�������ʵ��������ȽϺã�������λ��
 	public String convertToTitle(int n) {
 		StringBuilder sb = new StringBuilder("");
 		while (n > 0) {
@@ -214,10 +213,10 @@ public class Attempt {
 	/**
 	 * PROBLEM 169
 	 */
-	// TODO: �����û����������˼·�����⡣���÷���˼�룬�����ⲻ�ֳܷ�С���������ҵ�����ȽϺõĴ𰸣����óɶ���̭˼�����ġ�
+	// TODO: �����û����������˼·�����⡣���÷���˼�룬�����ⲻ�ֳܷ�С���������ҵ�����ȽϺõĴ𰸣����óɶ���̭˼�����ġ�
 	public int majorityElement(int[] nums) {
 		int candidate = 0;
-		int count = 0; // ĳ����ѡֵ�ĸ�������count Ϊ0 ��ʱ�򣬻���һ����ѡֵ��
+		int count = 0; // ĳ����ѡֵ�ĸ���count Ϊ0 ��ʱ�򣬻���һ����ѡֵ��
 		for (int i = 0; i < nums.length; i++) {
 			if (count == 0) {
 				candidate = nums[i];
@@ -235,7 +234,7 @@ public class Attempt {
 	/**
 	 * PROBLEM 191
 	 */
-	// TODO:�������λ���㣡������˵һ���޷������������ֱ�Ӱ�����ͳ�ƣ�������λ��1���������ŴӶ�������
+	// TODO:������λ���㣡������˵һ���޷���������ֱ�Ӱ�����ͳ�ƣ�������λ��1������ŴӶ���?
 	// you need to treat n as an unsigned value
 	public int hammingWeight(int n) {
 		int count = 0;
@@ -244,7 +243,7 @@ public class Attempt {
 			n >>>= 1;
 		}
 		return count;
-		// ��Ȼ�Ѿ����ֳɵķ����ˣ�ֱ��return Integer.bitCount(n);
+		// ��Ȼ�Ѿ����ֳɵķ����ˣ�ֱ��return Integer.bitCount(n);
 	}
 
 	/**
@@ -259,5 +258,85 @@ public class Attempt {
 					: lowestCommonAncestor(root.right, p, q);
 		}
 	}
-
+	
+	/**
+	 * PROBLEM 13
+	 */
+	//	罗马数字共有七个，即I(1)，V(5)，X(10)，L(50)，C(100)，D(500)，M(1000)。按照下面的规则可以表示任意正整数。
+	//	重复数次：一个罗马数字重复几次，就表示这个数的几倍。 
+	//	右加左减：在一个较大的罗马数字的右边记上一个较小的罗马数字，表示大数字加小数字。在一个较大的数字的左边记上一个较小的罗马数字，表示大数字减小数字。但是，左减不能跨越等级。比如，99不可以用IC表示，用XCIX表示。 
+	//	加线乘千：在一个罗马数字的上方加上一条横线或者在右下方写M，表示将这个数字乘以1000，即是原数的1000倍。同理，如果上方有两条横线，即是原数的1000000倍。 
+	//	单位限制：同样单位只能出现3次，如40不能表示为XXXX，而要表示为XL。
+    public int romanToInt(String s) {
+        int i = s.length() - 1;
+        int res = 0;
+        char temp = 0;
+        while(i >= 0) {
+        	if(i == s.length()) {
+            	res += charToInt(s.charAt(i));
+        	} else {
+        		int x = charToInt(s.charAt(i));
+        		if(x < charToInt(temp)) {
+                	res -= x;
+        		} else {
+                	res += x;
+        		}
+        	}
+        	temp = s.charAt(i);
+        	--i;
+        }
+        return res;
+    }
+	int charToInt(char c) {
+		switch (c) {
+		case 'I':
+			return 1;
+		case 'V':
+			return 5;
+		case 'X':
+			return 10;
+		case 'L':
+			return 50;
+		case 'C':
+			return 100;
+		case 'D':
+			return 500;
+		case 'M':
+			return 1000;
+		default:
+			return 0;
+		}
+	}
+	/**
+	 * PROBLEM 206
+	 */
+	// 递归做法
+	public ListNode reverseListRecursive(ListNode head) {
+		if(head == null || head.next == null) {
+			return head;
+		}
+		ListNode res = null;
+        if(head.next != null) {
+        	res = reverseListRecursive(head.next);
+        	head.next.next = head;
+        	head.next = null;
+        } else {
+        	res = head;
+        }
+        return res;
+    }
+	//非递归做法
+	public ListNode reverseList(ListNode head) {
+		ListNode res = head;
+		ListNode temp = head.next;
+		if(res != null) {
+			while(temp != null) {
+				temp = temp.next;
+				res = head.next;
+				res.next = head;
+				head = res;
+			}
+		}
+		return res;
+	}
 }
