@@ -199,8 +199,8 @@ public class Attempt {
 	/**
 	 * PROBLEM 168
 	 */
-	// TODO: ���⾹Ȼ���˺ܾã���ȻAC���ǻ���û���������𰸣���ʵ���Ǵ�ģ���
-	// ��ʵ��˼·�����⡣�����������λ��Ȼ���ɸ�λ���λ�������ʵ��������ȽϺã�������λ��
+	// TODO: 这题竟然想了很久，虽然AC但是还是没做出完美答案（事实上是错的）。
+	// 其实是思路有问题。我总是想求出位数然后由高位向低位输出。其实反向输出比较好，不用求位数。
 	public String convertToTitle(int n) {
 		StringBuilder sb = new StringBuilder("");
 		while (n > 0) {
@@ -213,10 +213,10 @@ public class Attempt {
 	/**
 	 * PROBLEM 169
 	 */
-	// TODO: �����û����������˼·�����⡣���÷���˼�룬�����ⲻ�ֳܷ�С���������ҵ�����ȽϺõĴ𰸣����óɶ���̭˼�����ġ�
+	// TODO:这道题没有做出来。思路有问题。想用分治思想，但该题不能分成小块来做。找到这个比较好的答案，是用成对淘汰思想做的。
 	public int majorityElement(int[] nums) {
 		int candidate = 0;
-		int count = 0; // ĳ����ѡֵ�ĸ���count Ϊ0 ��ʱ�򣬻���һ����ѡֵ��
+		int count = 0; //某个候选值的个数。当count 为0 的时候，换下一个候选值。
 		for (int i = 0; i < nums.length; i++) {
 			if (count == 0) {
 				candidate = nums[i];
@@ -234,7 +234,7 @@ public class Attempt {
 	/**
 	 * PROBLEM 191
 	 */
-	// TODO:������λ���㣡������˵һ���޷���������ֱ�Ӱ�����ͳ�ƣ�������λ��1������ŴӶ���?
+	// TODO:充分理解位运算！此题是说一个无符号整数，如果直接按求余统计，会把最高位的1当做正负号从而出错。
 	// you need to treat n as an unsigned value
 	public int hammingWeight(int n) {
 		int count = 0;
@@ -243,7 +243,7 @@ public class Attempt {
 			n >>>= 1;
 		}
 		return count;
-		// ��Ȼ�Ѿ����ֳɵķ����ˣ�ֱ��return Integer.bitCount(n);
+		// 竟然已经有现成的方法了：直接return Integer.bitCount(n);
 	}
 
 	/**
@@ -315,25 +315,25 @@ public class Attempt {
 		if(head == null || head.next == null) {
 			return head;
 		}
-		ListNode res = null;
-        if(head.next != null) {
-        	res = reverseListRecursive(head.next);
-        	head.next.next = head;
-        	head.next = null;
-        } else {
-        	res = head;
-        }
+		ListNode res = reverseListRecursive(head.next);
+        head.next.next = head;
+        head.next = null;
         return res;
     }
 	//非递归做法
 	public ListNode reverseList(ListNode head) {
+		int i = 0;
 		ListNode res = head;
-		ListNode temp = head.next;
 		if(res != null) {
-			while(temp != null) {
+			ListNode temp = head.next;
+			while(temp != null) {	
+				res = temp;
 				temp = temp.next;
-				res = head.next;
 				res.next = head;
+				if(i == 0) {
+					++i;
+					head.next = null;
+				}
 				head = res;
 			}
 		}
