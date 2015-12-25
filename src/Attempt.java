@@ -339,4 +339,35 @@ public class Attempt {
 		}
 		return res;
 	}
+	/**
+	 * PROBLEM 83
+	 */
+	//TODO: need optimize
+    public ListNode deleteDuplicates(ListNode head) {
+    	if(head != null && head.next != null) {
+    		ListNode temp = head;
+        	ListNode p = head;
+        	while(temp.next != null) {
+        		p = temp.next;
+    			while(p.val == temp.val) {
+    				if(p.next != null) {
+        				p = p.next;
+    				} else {
+    					break;
+    				}
+    			}
+    			if(p.next == null) {
+    				if(temp.val == p.val) {
+    					temp.next = null;
+    				} else {
+    					temp.next = p;
+    				}
+    				break;
+    			}
+    			temp.next = p;
+    			temp = p;
+        	}
+    	}
+    	return head;
+    }
 }
