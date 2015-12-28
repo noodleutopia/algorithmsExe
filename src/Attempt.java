@@ -33,10 +33,11 @@ public class Attempt {
 	 * PROBLEM 258
 	 */
 	public int addDigits(int num) {
-		if (num % 9 == 0) {
-			return 9;
-		}
-		return num % 9;
+        if(num == 0) {
+            return 0;
+        } else {
+            return (num % 9) == 0 ? 9 : (num % 9);
+        }
 	}
 
 	/**
@@ -342,32 +343,123 @@ public class Attempt {
 	/**
 	 * PROBLEM 83
 	 */
-	//TODO: need optimize
+	//TODO:注意“删除”的做法。链表中的“删除”通常是next指针越过它。
     public ListNode deleteDuplicates(ListNode head) {
     	if(head != null && head.next != null) {
     		ListNode temp = head;
-        	ListNode p = head;
-        	while(temp.next != null) {
-        		p = temp.next;
-    			while(p.val == temp.val) {
-    				if(p.next != null) {
-        				p = p.next;
-    				} else {
-    					break;
-    				}
-    			}
-    			if(p.next == null) {
-    				if(temp.val == p.val) {
-    					temp.next = null;
-    				} else {
-    					temp.next = p;
-    				}
-    				break;
-    			}
-    			temp.next = p;
-    			temp = p;
+        	ListNode p = head.next;
+        	while(p != null) {
+        		if(p.val == temp.val) {
+        			temp.next = p.next;
+        		} else {
+        			temp = p;
+        		}
+        		p = p.next;
         	}
     	}
     	return head;
+    }
+	/**
+	 * PROBLEM 70
+	 */
+	int climbStairs(int n) {
+		if (n < 1) {
+			return 0;
+		}
+		if (n == 1 || n == 2) {
+			return n;
+		}
+		int[] array = new int[n + 1];
+		array[1] = 1;
+		array[2] = 2;
+		for(int i = 3; i <= n; i++) {
+			array[i] = array[i-1] + array[i-2];
+		}
+		return array[n];
+	}
+	/**
+	 * PROBLEM 263
+	 */
+    public boolean isUgly(int num) {
+        if(num < 1) {
+        	return false;
+        }
+        if(num == 1) {
+        	return true;
+        }
+        if (num % 2 == 0) {
+        	return isUgly(num / 2);
+        } else if (num % 3 == 0) {
+        	return isUgly(num / 3);
+        } else if(num % 5 == 0) {
+        	return isUgly(num / 5);
+        } else {
+        	return false;
+        }
+    }
+    /**
+	 * PROBLEM 202
+	 */
+    //TODO: 本题学习Map的用法。当检查可能出现的循环或重复值时，可以用map作为存储结构，便于快速检索。
+    public boolean isHappy(int n) {
+        if(n <= 0) {
+        	return false;
+        }
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        map.put(n, n);
+        while (n != 1) {
+        	n = addDigitSquare(n);
+        	if(!map.containsValue(n)) {
+        		map.put(n, n);
+        	} else {
+        		return false;
+        	}
+        }
+        return true;
+    }
+    int addDigitSquare(int num) {
+    	int res = 0;
+    	while(num > 0) {
+    		res += (num % 10) * (num % 10);
+    		num /= 10;
+    	}
+    	return res;
+    }
+    /**
+   	 * PROBLEM 21
+   	 */
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    	if(l1 == null) {
+    		return l2;
+    	}
+    	if(l2 == null) {
+    		return l1;
+    	}
+        ListNode p1 = l1;
+        ListNode p2 = l2;
+        ListNode res = l1.val < l2.val ? l1 : l2;
+        ListNode p = res;
+        if(l1.val < l2.val) {
+        	p1 = p1.next;
+        } else {
+        	p2 = p2.next;
+        }
+        while(p1 != null && p2 != null) {
+        	if(p1.val < p2.val) {
+        		p.next = p1;
+        		p = p1;
+        		p1 = p1.next;
+        	} else {
+        		p.next = p2;
+        		p = p2;
+        		p2 = p2.next;
+        	}
+        }
+        if(p1 != null) {
+        	p.next = p1;
+        } else {
+        	p.next = p2;
+        }
+        return res;
     }
 }
