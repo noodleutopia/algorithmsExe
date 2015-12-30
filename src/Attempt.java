@@ -34,11 +34,11 @@ public class Attempt {
 	 * PROBLEM 258
 	 */
 	public int addDigits(int num) {
-        if(num == 0) {
-            return 0;
-        } else {
-            return (num % 9) == 0 ? 9 : (num % 9);
-        }
+		if (num == 0) {
+			return 0;
+		} else {
+			return (num % 9) == 0 ? 9 : (num % 9);
+		}
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class Attempt {
 	// TODO:这道题没有做出来。思路有问题。想用分治思想，但该题不能分成小块来做。找到这个比较好的答案，是用成对淘汰思想做的。
 	public int majorityElement(int[] nums) {
 		int candidate = 0;
-		int count = 0; //某个候选值的个数。当count 为0 的时候，换下一个候选值。
+		int count = 0; // 某个候选值的个数。当count 为0 的时候，换下一个候选值。
 		for (int i = 0; i < nums.length; i++) {
 			if (count == 0) {
 				candidate = nums[i];
@@ -260,35 +260,36 @@ public class Attempt {
 					: lowestCommonAncestor(root.right, p, q);
 		}
 	}
-	
+
 	/**
 	 * PROBLEM 13
 	 */
-	//	罗马数字共有七个，即I(1)，V(5)，X(10)，L(50)，C(100)，D(500)，M(1000)。按照下面的规则可以表示任意正整数。
-	//	重复数次：一个罗马数字重复几次，就表示这个数的几倍。 
-	//	右加左减：在一个较大的罗马数字的右边记上一个较小的罗马数字，表示大数字加小数字。在一个较大的数字的左边记上一个较小的罗马数字，表示大数字减小数字。但是，左减不能跨越等级。比如，99不可以用IC表示，用XCIX表示。 
-	//	加线乘千：在一个罗马数字的上方加上一条横线或者在右下方写M，表示将这个数字乘以1000，即是原数的1000倍。同理，如果上方有两条横线，即是原数的1000000倍。 
-	//	单位限制：同样单位只能出现3次，如40不能表示为XXXX，而要表示为XL。
-    public int romanToInt(String s) {
-        int i = s.length() - 1;
-        int res = 0;
-        char temp = 0;
-        while(i >= 0) {
-        	if(i == s.length()) {
-            	res += charToInt(s.charAt(i));
-        	} else {
-        		int x = charToInt(s.charAt(i));
-        		if(x < charToInt(temp)) {
-                	res -= x;
-        		} else {
-                	res += x;
-        		}
-        	}
-        	temp = s.charAt(i);
-        	--i;
-        }
-        return res;
-    }
+	// 罗马数字共有七个，即I(1)，V(5)，X(10)，L(50)，C(100)，D(500)，M(1000)。按照下面的规则可以表示任意正整数。
+	// 重复数次：一个罗马数字重复几次，就表示这个数的几倍。
+	// 右加左减：在一个较大的罗马数字的右边记上一个较小的罗马数字，表示大数字加小数字。在一个较大的数字的左边记上一个较小的罗马数字，表示大数字减小数字。但是，左减不能跨越等级。比如，99不可以用IC表示，用XCIX表示。
+	// 加线乘千：在一个罗马数字的上方加上一条横线或者在右下方写M，表示将这个数字乘以1000，即是原数的1000倍。同理，如果上方有两条横线，即是原数的1000000倍。
+	// 单位限制：同样单位只能出现3次，如40不能表示为XXXX，而要表示为XL。
+	public int romanToInt(String s) {
+		int i = s.length() - 1;
+		int res = 0;
+		char temp = 0;
+		while (i >= 0) {
+			if (i == s.length()) {
+				res += charToInt(s.charAt(i));
+			} else {
+				int x = charToInt(s.charAt(i));
+				if (x < charToInt(temp)) {
+					res -= x;
+				} else {
+					res += x;
+				}
+			}
+			temp = s.charAt(i);
+			--i;
+		}
+		return res;
+	}
+
 	int charToInt(char c) {
 		switch (c) {
 		case 'I':
@@ -309,30 +310,32 @@ public class Attempt {
 			return 0;
 		}
 	}
+
 	/**
 	 * PROBLEM 206
 	 */
 	// 递归做法
 	public ListNode reverseListRecursive(ListNode head) {
-		if(head == null || head.next == null) {
+		if (head == null || head.next == null) {
 			return head;
 		}
 		ListNode res = reverseListRecursive(head.next);
-        head.next.next = head;
-        head.next = null;
-        return res;
-    }
-	//非递归做法
+		head.next.next = head;
+		head.next = null;
+		return res;
+	}
+
+	// 非递归做法
 	public ListNode reverseList(ListNode head) {
 		int i = 0;
 		ListNode res = head;
-		if(res != null) {
+		if (res != null) {
 			ListNode temp = head.next;
-			while(temp != null) {	
+			while (temp != null) {
 				res = temp;
 				temp = temp.next;
 				res.next = head;
-				if(i == 0) {
+				if (i == 0) {
 					++i;
 					head.next = null;
 				}
@@ -341,25 +344,27 @@ public class Attempt {
 		}
 		return res;
 	}
+
 	/**
 	 * PROBLEM 83
 	 */
-	//TODO:注意“删除”的做法。链表中的“删除”通常是next指针越过它。
-    public ListNode deleteDuplicates(ListNode head) {
-    	if(head != null && head.next != null) {
-    		ListNode temp = head;
-        	ListNode p = head.next;
-        	while(p != null) {
-        		if(p.val == temp.val) {
-        			temp.next = p.next;
-        		} else {
-        			temp = p;
-        		}
-        		p = p.next;
-        	}
-    	}
-    	return head;
-    }
+	// TODO:注意“删除”的做法。链表中的“删除”通常是next指针越过它。
+	public ListNode deleteDuplicates(ListNode head) {
+		if (head != null && head.next != null) {
+			ListNode temp = head;
+			ListNode p = head.next;
+			while (p != null) {
+				if (p.val == temp.val) {
+					temp.next = p.next;
+				} else {
+					temp = p;
+				}
+				p = p.next;
+			}
+		}
+		return head;
+	}
+
 	/**
 	 * PROBLEM 70
 	 */
@@ -373,131 +378,205 @@ public class Attempt {
 		int[] array = new int[n + 1];
 		array[1] = 1;
 		array[2] = 2;
-		for(int i = 3; i <= n; i++) {
-			array[i] = array[i-1] + array[i-2];
+		for (int i = 3; i <= n; i++) {
+			array[i] = array[i - 1] + array[i - 2];
 		}
 		return array[n];
 	}
+
 	/**
 	 * PROBLEM 263
 	 */
-    public boolean isUgly(int num) {
-        if(num < 1) {
-        	return false;
-        }
-        if(num == 1) {
-        	return true;
-        }
-        if (num % 2 == 0) {
-        	return isUgly(num / 2);
-        } else if (num % 3 == 0) {
-        	return isUgly(num / 3);
-        } else if(num % 5 == 0) {
-        	return isUgly(num / 5);
-        } else {
-        	return false;
-        }
-    }
-    /**
+	public boolean isUgly(int num) {
+		if (num < 1) {
+			return false;
+		}
+		if (num == 1) {
+			return true;
+		}
+		if (num % 2 == 0) {
+			return isUgly(num / 2);
+		} else if (num % 3 == 0) {
+			return isUgly(num / 3);
+		} else if (num % 5 == 0) {
+			return isUgly(num / 5);
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * PROBLEM 202
 	 */
-    //TODO: 本题学习Map的用法。当检查可能出现的循环或重复值时，可以用map作为存储结构，便于快速检索。
-    public boolean isHappy(int n) {
-        if(n <= 0) {
-        	return false;
-        }
-        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        map.put(n, n);
-        while (n != 1) {
-        	n = addDigitSquare(n);
-        	if(!map.containsValue(n)) {
-        		map.put(n, n);
-        	} else {
-        		return false;
-        	}
-        }
-        return true;
-    }
-    int addDigitSquare(int num) {
-    	int res = 0;
-    	while(num > 0) {
-    		res += (num % 10) * (num % 10);
-    		num /= 10;
-    	}
-    	return res;
-    }
-    /**
-   	 * PROBLEM 21
-   	 */
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-    	if(l1 == null) {
-    		return l2;
-    	}
-    	if(l2 == null) {
-    		return l1;
-    	}
-        ListNode p1 = l1;
-        ListNode p2 = l2;
-        ListNode res = l1.val < l2.val ? l1 : l2;
-        ListNode p = res;
-        if(l1.val < l2.val) {
-        	p1 = p1.next;
-        } else {
-        	p2 = p2.next;
-        }
-        while(p1 != null && p2 != null) {
-        	if(p1.val < p2.val) {
-        		p.next = p1;
-        		p = p1;
-        		p1 = p1.next;
-        	} else {
-        		p.next = p2;
-        		p = p2;
-        		p2 = p2.next;
-        	}
-        }
-        if(p1 != null) {
-        	p.next = p1;
-        } else {
-        	p.next = p2;
-        }
-        return res;
-    }
-    /**
-   	 * PROBLEM 232
-   	 */
-    class MyQueue {
-    	public Stack<Integer> stack1 = new Stack<Integer>();
-    	public Stack<Integer> stack2 = new Stack<Integer>();
+	// TODO: 本题学习Map的用法。当检查可能出现的循环或重复值时，可以用map作为存储结构，便于快速检索。
+	public boolean isHappy(int n) {
+		if (n <= 0) {
+			return false;
+		}
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		map.put(n, n);
+		while (n != 1) {
+			n = addDigitSquare(n);
+			if (!map.containsValue(n)) {
+				map.put(n, n);
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
 
-        // Push element x to the back of queue.
-        public void push(int x) {
-            stack1.push(x);
-        }
+	int addDigitSquare(int num) {
+		int res = 0;
+		while (num > 0) {
+			res += (num % 10) * (num % 10);
+			num /= 10;
+		}
+		return res;
+	}
 
-        // Removes the element from in front of queue.
-        public void pop() {
-        	while(stack1.size() > 1) {
-                stack2.push(stack1.pop());
-        	}
-        	stack1.pop();
-        	while(!stack2.isEmpty()) {
-        		stack1.push(stack2.pop());
-        	}
-        }
+	/**
+	 * PROBLEM 21
+	 */
+	public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+		if (l1 == null) {
+			return l2;
+		}
+		if (l2 == null) {
+			return l1;
+		}
+		ListNode p1 = l1;
+		ListNode p2 = l2;
+		ListNode res = l1.val < l2.val ? l1 : l2;
+		ListNode p = res;
+		if (l1.val < l2.val) {
+			p1 = p1.next;
+		} else {
+			p2 = p2.next;
+		}
+		while (p1 != null && p2 != null) {
+			if (p1.val < p2.val) {
+				p.next = p1;
+				p = p1;
+				p1 = p1.next;
+			} else {
+				p.next = p2;
+				p = p2;
+				p2 = p2.next;
+			}
+		}
+		if (p1 != null) {
+			p.next = p1;
+		} else {
+			p.next = p2;
+		}
+		return res;
+	}
 
-        // Get the front element.
-        public int peek() {
-        	while(stack1.size() > 1) {
-                stack2.push(stack1.pop());
-        	}
-        	return stack1.peek();
-        }
+	/**
+	 * PROBLEM 232
+	 */
+	class MyQueue {
+		public Stack<Integer> stack1 = new Stack<Integer>();
+		public Stack<Integer> stack2 = new Stack<Integer>();
 
-        // Return whether the queue is empty.
-        public boolean empty() {
-            return stack1.isEmpty();
-        }
-    }
-    
+		// Push element x to the back of queue.
+		public void push(int x) {
+			stack1.push(x);
+		}
+
+		// Removes the element from in front of queue.
+		public void pop() {
+			while (stack1.size() > 1) {
+				stack2.push(stack1.pop());
+			}
+			stack1.pop();
+			while (!stack2.isEmpty()) {
+				stack1.push(stack2.pop());
+			}
+		}
+
+		// Get the front element.
+		public int peek() {
+			while (stack1.size() > 1) {
+				stack2.push(stack1.pop());
+			}
+			return stack1.peek();
+		}
+
+		// Return whether the queue is empty.
+		public boolean empty() {
+			return stack1.isEmpty();
+		}
+	}
+
+	/**
+	 * PROBLEM 137 Single Number II
+	 */
+	// TODO: 这题涉及位操作，太神奇，自己完全不会。在讨论区找到了这个非常牛B的答案。基本思路是，遍历数组，统计每个数位上 1 的个数。当
+	// 计数到3个时，清0。也就是模3操作。
+	public int singleNumber(int[] nums) {
+		// we need to implement a tree-time counter(base 3) that if a bit
+		// appears three time ,it will be zero.
+		// #curent income ouput
+		// # ab c/c ab/ab
+		// # 00 1/0 01/00
+		// # 01 1/0 10/01
+		// # 10 1/0 00/10
+		// a=~abc+a~b~c;
+		// b=~a~bc+~ab~c;
+		int a = 0;
+		int b = 0;
+		for (int c : nums) {
+			int ta = (~a & b & c) | (a & ~b & ~c);
+			b = (~a & ~b & c) | (~a & b & ~c);
+			a = ta;
+		}
+		// we need find the number that is 01,10 => 1, 00 => 0.
+		return a | b;
+	}
+
+	/**
+	 * PROBLEM 231 Power of Two
+	 */
+	// 也是位操作的小技巧。n & (n - 1) 可以判断n是否只有一位为1.
+	public boolean isPowerOfTwo(int n) {
+		return n > 0 && ((n & (n - 1)) == 0);
+	}
+
+	/**
+	 * PROBLEM 110. Balanced Binary Tree
+	 */
+	//深度优先搜索
+	public boolean isBalanced(TreeNode root) {
+		if (checkHeight(root) == -1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	int checkHeight(TreeNode root) {
+		if (root == null) {
+			return 0;
+		}
+
+		int leftHeight = checkHeight(root.left);
+		if (leftHeight == -1) {
+			return -1;
+		}
+
+		int rightHeight = checkHeight(root.right);
+		if (rightHeight == -1) {
+			return -1;
+		}
+
+		int heightDiff = leftHeight - rightHeight;
+		if (Math.abs(heightDiff) > 1) {
+			return -1;
+		} else {
+			return Math.max(leftHeight, rightHeight) + 1;
+		}
+	}
+
 }
