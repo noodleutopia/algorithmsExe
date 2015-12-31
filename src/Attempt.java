@@ -555,7 +555,6 @@ public class Attempt {
 			return true;
 		}
 	}
-
 	int checkHeight(TreeNode root) {
 		if (root == null) {
 			return 0;
@@ -578,5 +577,75 @@ public class Attempt {
 			return Math.max(leftHeight, rightHeight) + 1;
 		}
 	}
-
+	/**
+	 * PROBLEM 101. Symmetric Tree
+	 */
+	//迭代做法
+	public boolean isSymmetric(TreeNode root) {
+        if(root == null) {
+        	return true;
+        }
+        if(root.left == null && root.right == null) {
+        	return true;
+        }
+        Stack<TreeNode> stackLeft = new Stack<TreeNode>();
+        Stack<TreeNode> stackRight = new Stack<TreeNode>();
+        if(root.left != null) {
+            stackLeft.push(root.left);
+        }
+        if(root.right != null) {
+        	stackRight.push(root.right);
+        }
+        TreeNode left = null;
+        TreeNode right = null;
+        
+        while(!stackLeft.isEmpty() && !stackRight.isEmpty()) {
+        	left = stackLeft.pop();
+        	right = stackRight.pop();
+        	if(left.val != right.val) {
+        		return false;
+        	}
+        	if(left.left != null) {
+        		if(right.right == null) {
+        			return false;
+        		}
+        		stackLeft.push(left.left);
+        		stackRight.push(right.right);
+        		
+        	} else if(right.right != null) {
+        		return false;
+        	}
+        	if(left.right != null) {
+        		if(right.left == null) {
+        			return false;
+        		}
+        		stackLeft.push(left.right);
+        		stackRight.push(right.left);
+        	} else if(right.left != null) {
+        		return false;
+        	}
+        }
+        return stackLeft.empty() && stackRight.empty();
+    }
+	//递归做法
+	//TODO: 没做出来。多看看递归吧。
+    public boolean isSymmetricRecursively(TreeNode root) {
+        if(root == null) {
+        	return true;
+        }
+        return ifSymmetric(root.left, root.right);
+    }
+    
+    boolean ifSymmetric(TreeNode nodeA, TreeNode nodeB) {
+    	if(nodeA == null && nodeB == null) {
+    		return true;
+    	}
+    	if(nodeA == null || nodeB == null) {
+    		return false;
+    	}
+    	if(nodeA.val != nodeB.val)
+            return false;
+        else
+            return (ifSymmetric(nodeA.left, nodeA.right) && ifSymmetric(nodeB.right, nodeB.left));
+    }
 }
