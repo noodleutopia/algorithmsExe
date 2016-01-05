@@ -1,6 +1,10 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Stack;
 
 import binary_tree.TreeNode;
@@ -646,6 +650,54 @@ public class Attempt {
     	if(nodeA.val != nodeB.val)
             return false;
         else
-            return (ifSymmetric(nodeA.left, nodeA.right) && ifSymmetric(nodeB.right, nodeB.left));
+            return (ifSymmetric(nodeA.left, nodeB.right) && ifSymmetric(nodeA.right, nodeB.left));
     }
+    /**
+	 * PROBLEM 27. Remove Element
+	 * 真神奇。第27道题居然刚好编号27。
+	 */
+    public int removeElement(int[] nums, int val) {
+    	int i = 0;
+    	int j = nums.length - 1;
+
+    	while(i <= j) {
+    		if(nums[j] == val) {
+    			--j;
+    		}else if(nums[i] == val) {
+    			nums[i] = nums[j];
+    			--j;
+    			++i;
+    		} else {
+    			++i;
+    		}
+    	}
+    	if(j < 0) {
+    		return 0;
+    	}
+    	return j + 1;
+    }
+    /**
+   	 * PROBLEM 107. Binary Tree Level Order Traversal II
+   	 */
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+    	 List<List<Integer>> container = new ArrayList<List<Integer>>();
+         if (root == null) return container;
+         TreeNode cur = null;
+         Queue<TreeNode> sameLevel = new LinkedList<TreeNode>();
+         sameLevel.add(root);
+         while (!sameLevel.isEmpty()) {
+             List<Integer> oneLevel = new ArrayList<Integer>();
+             Queue<TreeNode> temp = new LinkedList<TreeNode>();
+             while(!sameLevel.isEmpty()) {
+                 cur = sameLevel.remove();
+                 oneLevel.add(cur.val);
+                 if (cur.left != null)  temp.add(cur.left); 
+                 if (cur.right != null) temp.add(cur.right);
+             }
+             container.add(0,oneLevel);
+             sameLevel = temp;
+         }
+         return container;
+    }
+    
 }
