@@ -700,4 +700,118 @@ public class Attempt {
          return container;
     }
     
+    /**
+   	 * PROBLEM 118	Pascal's Triangle
+   	 */
+    public List<List<Integer>> generate(int numRows) {
+    	List<List<Integer>> res = new ArrayList<List<Integer>>();
+    	if(numRows <= 0) {
+    		return res;
+    	}
+    	List<Integer> oneRow = new ArrayList<Integer>();
+    	List<Integer> lastRow = new ArrayList<Integer>();
+    	oneRow.add(1);
+    	res.add(oneRow);
+    	int i = 1;
+    	while(i < numRows) {
+    		oneRow = new ArrayList<Integer>(i+1);
+    		lastRow = res.get(i - 1);
+    		for(int j = 0; j <= i; j++) {
+    			if(j == 0 || j == i) {
+    				oneRow.add(1);
+    			} else {
+    				oneRow.add(lastRow.get(j) + lastRow.get(j-1));
+    			}
+    		}
+    		res.add(oneRow);
+    		++i;
+    	}
+    	return res;
+    }
+    /**
+   	 * PROBLEM 118	Pascal's Triangle
+   	 */
+    //TODO:遇到数学题就有点怵。这道题其实难点是，所有的尾0都来自于 2*5.而阶乘中，5的个数总是小于2的个数，即
+    //每出现一个5，由于是阶乘，所以肯定要至少出现两个2.因此，只要统计5的个数就可以了。
+    public int trailingZeroes(int n) {
+    	return n == 0 ? 0 : n / 5 + trailingZeroes(n / 5);
+    }
+    /**
+   	 * PROBLEM 102. Binary Tree Level Order Traversal
+   	 */
+    //TODO:下面是自己做出的非常蠢的方法。空间复杂度太高了。后面接了一个利用队列的做法，非常好。
+    public List<List<Integer>> levelOrderByMyself(TreeNode root) {
+    	List<List<Integer>> res = new ArrayList<List<Integer>>();
+    	List<List<TreeNode>> resNode = new ArrayList<List<TreeNode>>();
+        if(root == null) {
+        	return res;
+        }
+        List<TreeNode> oneRowNode = new ArrayList<TreeNode>();
+        List<TreeNode> tempRowNode = new ArrayList<TreeNode>();
+        List<Integer> oneRow = new ArrayList<Integer>();
+        oneRowNode.add(root);
+        oneRow.add(root.val);
+        res.add(oneRow);
+        
+        tempRowNode = oneRowNode;
+        while(!tempRowNode.isEmpty()) {
+        	resNode.add(tempRowNode);
+        	res.add(oneRow);
+        	oneRowNode = new ArrayList<TreeNode>();
+        	oneRow = new ArrayList<Integer>();
+        	for(TreeNode node : tempRowNode) {
+        		if(node.left != null) {
+        			oneRowNode.add(node.left);
+            		oneRow.add(node.left.val);
+        		}
+        		if(node.right != null) {
+        			oneRowNode.add(node.right);
+            		oneRow.add(node.right.val);
+        		}
+        	}
+        	tempRowNode = oneRowNode;
+        }
+        
+        return res;
+    }
+    //这个解，利用队列的先进先出，每轮循环访问一层，每次循环结束时队列中只有下一层的元素。妙。
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        List<List<Integer>> wrapList = new LinkedList<List<Integer>>();
+
+        if(root == null) return wrapList;
+
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int levelNum = queue.size();//这里很巧妙地获得了队列长度，限定了每一层的个数；
+            List<Integer> subList = new LinkedList<Integer>();
+            for(int i=0; i<levelNum; i++) {
+                if(queue.peek().left != null) queue.offer(queue.peek().left);
+                if(queue.peek().right != null) queue.offer(queue.peek().right);
+                subList.add(queue.poll().val);//这里加入本层的值，而且将其退出队列；
+            }
+            wrapList.add(subList);
+        }
+        return wrapList;
+    }
+    /**
+   	 * PROBLEM 119. Pascal's Triangle II
+   	 */
+    //TODO:这个题又挂了。思路是，下一行比上一行多一个元素，而每个元素除了两端为1，其他的都是上一行元素相邻相加得出的。
+    //因此，可以每次在列表尾部加入一个1，然后从后向前，每个元素都由自身和前一个元素相加得出。当然，最前端仍然为1.
+    public List<Integer> getRow(int rowIndex) {
+    	 List<Integer> list = new ArrayList<Integer>();
+    	    if (rowIndex < 0)
+    	        return list;
+
+    	    for (int i = 0; i < rowIndex + 1; i++) {
+    	        list.add(1);
+    	        for (int j = list.size() - 2; j > 0; j--) {
+    	        	//这个范围就是掐头去尾的范围。
+    	            list.set(j, list.get(j) + list.get(j - 1));
+    	        }
+    	        list.set(0, 1);
+    	    }
+    	    return list;
+    }
 }
