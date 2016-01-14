@@ -906,4 +906,96 @@ public class Attempt {
         }
         return (x==rev || x==rev/10);
     }
+    /**
+   	 * PROBLEM 160. Intersection of Two Linked Lists
+   	 */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(headA == null || headB == null) {
+        	return null;
+        }
+        int sizeA = 1;
+        int sizeB = 1;
+        ListNode pa = headA;
+        ListNode pb = headB;
+        while(pa.next != null) {
+        	pa = pa.next;
+        	++sizeA;
+        }
+        while(pb.next != null) {
+        	pb = pb.next;
+        	++sizeB;
+        }
+        //尾部对齐，长度相等。
+        pa = headA;
+        pb = headB;
+        while(sizeA > sizeB) {
+        	pa = pa.next;
+        	--sizeA;
+        }
+        while(sizeA < sizeB) {
+        	pb = pb.next;
+        	--sizeB;
+        }
+        //若此时已重合
+        if(pa == pb) {
+        	return pa;
+        }
+        //找后续是否重合
+        while(pa.next != null && pa.next != pb.next) {
+        	pa = pa.next;
+        	pb = pb.next;
+        }
+        return pa.next;
+    }
+    /**
+   	 * PROBLEM 8. String to Integer (atoi)
+   	 */
+    public int myAtoi(String str) {
+        int index = 0, sign = 1, total = 0;
+        //1. Empty string
+        if(str.length() == 0) return 0;
+
+        //2. Remove Spaces
+        while(str.charAt(index) == ' ' && index < str.length())
+            index ++;
+
+        //3. Handle signs
+        if(str.charAt(index) == '+' || str.charAt(index) == '-'){
+            sign = str.charAt(index) == '+' ? 1 : -1;
+            index ++;
+        }
+
+        //4. Convert number and avoid overflow
+        while(index < str.length()){
+            int digit = str.charAt(index) - '0';
+            if(digit < 0 || digit > 9) break;
+
+            //check if total will be overflow after 10 times and add digit
+            if(Integer.MAX_VALUE/10 < total || Integer.MAX_VALUE/10 == total && Integer.MAX_VALUE %10 < digit)
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+
+            total = 10 * total + digit;
+            index ++;
+        }
+        return total * sign;
+    }
+    /**
+   	 * PROBLEM 7. Reverse Integer
+   	 */
+    public int reverse(int x) {
+        int res = 0;
+        int sign = x > 0 ? 1 : -1;
+        x = Math.abs(x);
+        int temp = x;
+        while(temp > 0) {
+        	if(Integer.MAX_VALUE/10 < res || Integer.MAX_VALUE/10 == res && Integer.MAX_VALUE%10 < temp%10) {
+        		return 0;
+        	}
+        	res = res * 10 + temp % 10;
+        	temp = temp / 10;
+        }
+        return res * sign;
+    }
+    
+    
 }
