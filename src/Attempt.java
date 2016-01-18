@@ -996,6 +996,34 @@ public class Attempt {
         }
         return res * sign;
     }
+
+	/**
+	 * PROBLEM 88. Merge Sorted Array
+	 */
+	public void merge(int[] nums1, int m, int[] nums2, int n) {
+		int i = m - 1;
+		int j = n - 1;
+		int k = m + n - 1;
+		while (i > -1 && j > -1) {
+			nums1[k--] = nums1[i] > nums2[j] ? nums1[i--] : nums2[j--];
+		}
+		while (j > -1) {
+			nums1[k--] = nums2[j--];
+		}
+	}
+	/**
+	 * PROBLEM 190. Reverse Bits
+	 */
+	public int reverseBits(int n) {
+		int result = 0;
+		for (int i = 0; i < 32; i++) {
+			result += n & 1;
+			n >>>= 1; // CATCH: must do unsigned shift
+			if (i < 31) // CATCH: for last digit, don't shift!
+				result <<= 1;
+		}
+		return result;
+	}
     
     
 }
