@@ -19,6 +19,9 @@ public class Attempt {
 		// String result = canWin(i) ? "win" : "lose";
 		// System.out.println("you will " + result);
 //		System.out.println(isAnagram(s, t));
+		char[][] board = {"7...4....".toCharArray(),"...865...".toCharArray(),".1.2.....".toCharArray(),
+				".....9...".toCharArray(),"....5.5..".toCharArray(),".........".toCharArray(),"......2..".toCharArray(),".........".toCharArray(),".........".toCharArray()};
+		System.out.println("you will " + isValidSudoku(board));
 	}
 
 	/**
@@ -1024,6 +1027,92 @@ public class Attempt {
 		}
 		return result;
 	}
-    
-    
+	/**
+	 * PROBLEM 111. Minimum Depth of Binary Tree
+	 */
+	public int minDepth(TreeNode root) {
+		if(root == null) {
+    		return 0;
+    	}
+        int res = 1;
+        int minLeft = minDepth(root.left);
+        int minRight = minDepth(root.right);
+        if(minLeft * minRight == 0) {
+        	res += minLeft == 0 ? minRight : minLeft;
+        } else {
+        	res += minLeft > minRight ? minRight : minLeft;
+        }
+        return res;
+    }
+	/**
+	 * PROBLEM 36. Valid Sudoku
+	 */
+    public static boolean isValidSudoku(char[][] board) {
+        //row check;
+        int i = 0;
+        int j = 0;
+        Map<Character, Integer> rowMap = new HashMap<Character, Integer>();
+        for(; i < 9; i++) {
+        	for(j = 0; j < 9; j++) {
+        		if(board[i][j] != '.') {
+            		if(rowMap.containsKey(board[i][j])) {
+            			return false;
+            		} else {
+            			rowMap.put(board[i][j], 1);
+            		}
+            	}
+        	}
+        	rowMap.clear();
+        }
+        //column check;
+        for(i = 0; i < 9; i++) {
+        	for(j = 0; j < 9; j++) {
+        		if(board[j][i] != '.') {
+            		if(rowMap.containsKey(board[j][i])) {
+            			return false;
+            		} else {
+            			rowMap.put(board[j][i], 1);
+            		}
+            	}
+        	}
+        	rowMap.clear();
+        }
+        //unit check;
+        rowMap = new HashMap<Character, Integer>();
+        for(int iu = 0; iu < 7; iu += 3) {
+        	for(int ju = 0; ju < 7; ju += 3) {
+        		for(i = iu; i < iu + 3; i++) {
+        			for(j = ju; j < ju + 3; j++) {
+        				if(board[i][j] != '.') {
+                    		if(rowMap.containsKey(board[i][j])) {
+                    			return false;
+                    		} else {
+                    			rowMap.put(board[i][j], 1);
+                    		}
+                    	}
+        			}
+        		}
+        		rowMap.clear();
+        	}
+        }
+        
+        return true;
+    }
+    /**
+	 * PROBLEM 223. Rectangle Area
+	 */
+	public int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+		int redunt = 0;
+		if (E >= C || A >= G || F >= D || B >= H || ((A - C) * (B - D) * (E - G) * (F - H) == 0)) {
+			redunt = 0;
+		} else {
+			int top = D < H ? D : H;
+			int bottom = B > F ? B : F;
+			int left = A > E ? A : E;
+			int right = C < G ? C : G;
+			redunt = (top - bottom) * (right - left);
+		}
+
+		return (C - A) * (D - B) + (G - E) * (H - F) - redunt;
+    }
 }
