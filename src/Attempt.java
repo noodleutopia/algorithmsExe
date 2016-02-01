@@ -1189,4 +1189,43 @@ public class Attempt {
         }
         return stack.isEmpty() ? true : false;
     }
+    /**
+	 * PROBLEM 205. Isomorphic Strings
+	 */
+    //这个是我自己的做法，很笨。下面有一个数组解法。
+    public boolean isIsomorphicOfMine(String s, String t) {
+        if(s.isEmpty() || s.length() == 1) {
+        	return true;
+        }
+        Map<Character, Integer> sPosMap = new HashMap<Character, Integer>();
+        Map<Character, Integer> tPosMap = new HashMap<Character, Integer>();
+        int i = 0;
+        char sTemp = s.charAt(i);
+        char tTemp = t.charAt(i);
+        while(i < s.length()) {
+        	sTemp = s.charAt(i);
+        	tTemp = t.charAt(i);
+        	int sPos = sPosMap.get(sTemp) == null ? 0 : sPosMap.get(sTemp);
+        	int tPos = tPosMap.get(tTemp) == null ? 0 : tPosMap.get(tTemp);
+        	if(sPos == tPos) {
+        		if(sPos == 0) {
+        			sPosMap.put(sTemp, i+1);
+        			tPosMap.put(tTemp, i+1);
+        		}
+        	} else {
+        		return false;
+        	}
+        	i++;
+        }
+        return true;
+    }
+    //这个做法每次只检查当前字符出现的位置是否相同。很巧妙，根本不需要计数。
+    public boolean isIsomorphic(String s, String t) {
+        int[] m = new int[512];
+        for (int i = 0; i < s.length(); i++) {
+            if (m[s.charAt(i)] != m[t.charAt(i)+256]) return false;
+            m[s.charAt(i)] = m[t.charAt(i)+256] = i+1;
+        }
+        return true;
+    }
 }
