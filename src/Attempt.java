@@ -1115,4 +1115,78 @@ public class Attempt {
 
 		return (C - A) * (D - B) + (G - E) * (H - F) - redunt;
     }
+	/**
+	 * PROBLEM 19. Remove Nth Node From End of List
+	 */
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode pre = head;
+        ListNode lat = pre;
+        int i = 0;
+        while(i < n && lat.next != null) {
+        	lat = lat.next;
+        	++i;
+        }
+        if(i < n) {
+        	//head will be deleted.
+        	if(i == 0) {
+        		return null;
+        	} else {
+        		ListNode temp = pre.next;
+        		pre.next = null;
+        		return temp;
+        	}
+        }
+        while(pre.next.next != null && lat.next != null) {
+        	pre = pre.next;
+        	lat = lat.next;
+        }
+        
+        ListNode temp = pre.next;
+        pre.next = temp.next;
+        temp.next = null;
+        
+        return head;
+    }
+    /**
+	 * PROBLEM 20. Valid Parentheses
+	 */
+    public boolean isValid(String s) {
+        if(s == null || s.isEmpty()) {
+        	return true;
+        }
+        Stack<Character> stack = new Stack<Character>();
+        int i = 0;
+        char c = s.charAt(0);
+        while(i < s.length()) {
+        	c = s.charAt(i);
+        	switch(c) {
+        		case '(':
+        			stack.push(c);
+        			break;
+        		case '[':
+        			stack.push(c);
+        			break;
+        		case '{':
+        			stack.push(c);
+        			break;
+        		case ')':
+        			if(stack.isEmpty() || stack.pop() != '(') {
+        				return false;
+        			}
+        			break;
+        		case ']':
+        			if(stack.isEmpty() || stack.pop() != '[') {
+        				return false;
+        			}
+        			break;
+        		case '}':
+        			if(stack.isEmpty() || stack.pop() != '{') {
+        				return false;
+        			}
+        			break;
+        	}
+        	i++;
+        }
+        return stack.isEmpty() ? true : false;
+    }
 }
