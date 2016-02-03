@@ -1228,4 +1228,80 @@ public class Attempt {
         }
         return true;
     }
+    /**
+	 * PROBLEM 299. Bulls and Cows
+	 */
+    //下面是我的笨做法。
+	public String getHintOfMine(String secret, String guess) {
+		int bull = 0;
+		int cow = 0;
+
+		Map<Character, Integer> mapS = new HashMap<Character, Integer>();
+		Map<Character, Integer> mapG = new HashMap<Character, Integer>();
+		int i = 0;
+		while (i < secret.length()) {
+			char s = secret.charAt(i);
+			char g = guess.charAt(i);
+			if (s == g) {
+				bull++;
+			} else {
+				if (mapS.containsKey(g) && mapS.get(g) > 0) {
+					if (mapG.containsKey(s) && mapG.get(s) > 0) {
+						cow += 2;
+						mapG.put(s, mapG.get(s) - 1);
+						mapS.put(g, mapS.get(g) - 1);
+					} else {
+						cow++;
+						mapS.put(g, mapS.get(g) - 1);
+						mapS.put(s, mapS.containsKey(s) ? 1 + mapS.get(s) : 1);
+					}
+				} else if (mapG.containsKey(s) && mapG.get(s) > 0) {
+					cow++;
+					mapG.put(s, mapG.get(s) - 1);
+					mapG.put(g, mapG.containsKey(g) ? 1 + mapG.get(g) : 1);
+				} else {
+					mapG.put(g, mapG.containsKey(g) ? 1 + mapG.get(g) : 1);
+					mapS.put(s, mapS.containsKey(s) ? 1 + mapS.get(s) : 1);
+				}
+			}
+
+			i++;
+		}
+		return bull + "A" + cow + "B";
+	}
+	//下面是一种one-pass做法。利用了一维数组，二元中和思想。即一边加另一边减，只要检测到不为0，就计数，同时中和一次。
+	public String getHint(String secret, String guess) {
+	    int bulls = 0;
+	    int cows = 0;
+	    int[] numbers = new int[10];
+	    for (int i = 0; i<secret.length(); i++) {
+	        if (secret.charAt(i) == guess.charAt(i)) bulls++;
+	        else {
+	            if (numbers[secret.charAt(i)-'0']++ < 0) cows++;
+	            if (numbers[guess.charAt(i)-'0']-- > 0) cows++;
+	        }
+	    }
+	    return bulls + "A" + cows + "B";
+	}
+	/**
+	 * PROBLEM 290. Word Pattern
+	 */
+	//TODO:wrong for now!!
+    public boolean wordPattern(String pattern, String str) {
+        if((pattern == null && str == null) || (pattern.isEmpty() && str.isEmpty())) {
+        	return true;
+        }
+        Map<Character, String> map = new HashMap<Character, String>();
+        int i = 0;
+        String[] array = str.split(" ");
+        while(i < pattern.length()) {
+        	if(!map.containsKey(pattern.charAt(i))) {
+        		map.put(pattern.charAt(i), array[i]);
+        	} else if(!map.get(pattern.charAt(i)).equals(array[i])) {
+        		return false;
+        	}
+        	i++;
+        }
+        return true;
+    }
 }
