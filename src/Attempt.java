@@ -1286,22 +1286,86 @@ public class Attempt {
 	/**
 	 * PROBLEM 290. Word Pattern
 	 */
-	//TODO:wrong for now!!
-    public boolean wordPattern(String pattern, String str) {
-        if((pattern == null && str == null) || (pattern.isEmpty() && str.isEmpty())) {
-        	return true;
-        }
-        Map<Character, String> map = new HashMap<Character, String>();
-        int i = 0;
-        String[] array = str.split(" ");
-        while(i < pattern.length()) {
-        	if(!map.containsKey(pattern.charAt(i))) {
-        		map.put(pattern.charAt(i), array[i]);
-        	} else if(!map.get(pattern.charAt(i)).equals(array[i])) {
-        		return false;
+	//TODO:这个题直接教育了我一个Map的方法，即Put是有返回值的，返回在put之前该key对应的value。
+	//另外，Map还有一个containsValue方法，可以判断有无该value。这样就可以在put之前，检查是否出现一个value对应多个key的情况。
+	public boolean wordPattern(String pattern, String str) {
+		if ((pattern == null && str == null) || (pattern.isEmpty() && str.isEmpty())) {
+			return true;
+		}
+		Map<Character, String> map = new HashMap<Character, String>();
+		int i = 0;
+		String[] array = str.split(" ");
+		if (array.length != pattern.length()) {
+			return false;
+		}
+		while (i < pattern.length()) {
+			if (map.containsKey(pattern.charAt(i))) {
+				if (!map.get(pattern.charAt(i)).equals(array[i])) {
+					return false;
+				}
+			} else if(map.containsValue(array[i])) {
+				return false;
+			} else {
+				map.put(pattern.charAt(i), array[i]);
+			}
+			i++;
+		}
+		return true;
+	}
+	/**
+	 * PROBLEM 38. Count and Say
+	 */
+    public String countAndSay(int n) {
+    	if(n == 1) {
+    		return "1";
+    	}
+        StringBuilder sb = new StringBuilder();
+        String temp = countAndSay(n - 1);
+        int[] array = new int[9];
+        int c = temp.charAt(0) - '0';
+        array[c]++;
+        int post = 0;
+        for(int i = 1; i < temp.length(); i++) {
+        	post = temp.charAt(i) - '0';
+        	if(post == c) {
+        		array[post]++;
+        	} else {
+        		sb.append(array[c]);
+        		sb.append(c);
+        		array[c] = 0;
+        		array[post]++;
+        		c = post;
         	}
-        	i++;
         }
-        return true;
+        sb.append(array[c]);
+        sb.append(c);
+        
+        return sb.toString();
+    }
+	/**
+	 * PROBLEM 38. Count and Say
+	 */
+    public ListNode removeElements(ListNode head, int val) {
+    	if(head == null || (head.next == null && head.val == val)) {
+    		return null;
+    	}
+    	if(head.next != null) {
+    		ListNode pre = head;
+            ListNode current = head.next;
+            while(current != null) {
+            	if(current.val == val) {
+            		pre.next = current.next;
+            		current = pre.next;
+            	} else {
+            		pre = current;
+            		current = pre.next;
+            	}
+            }
+            if(head.val == val) {
+            	head = head.next;
+            }
+    	}
+        
+        return head;
     }
 }
