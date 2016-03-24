@@ -1343,7 +1343,7 @@ public class Attempt {
         return sb.toString();
     }
 	/**
-	 * PROBLEM 38. Count and Say
+	 * 203. Remove Linked List Elements
 	 */
     public ListNode removeElements(ListNode head, int val) {
     	if(head == null || (head.next == null && head.val == val)) {
@@ -1368,4 +1368,33 @@ public class Attempt {
         
         return head;
     }
+    /**
+	 * 14. Longest Common Prefix
+	 */
+    public String longestCommonPrefix(String[] strs) {
+        if(strs == null || strs.length < 1) {
+        	return "";
+        }
+        String result = strs[0];
+        String temp = result;
+        int i = 1, j = 0;
+        for(i = 1; i < strs.length; i++) {
+        	if(result.length() < 1) {
+        		break;
+        	}
+        	temp = strs[i];
+        	for(j = 0; j < (temp.length() < result.length() ? temp.length() : result.length()); j++) {
+        		if(temp.charAt(j) != result.charAt(j)) {
+        			result = result.substring(0, j);
+        			break;
+        		}
+        	}
+        	if(j < result.length()) {
+        		result = result.substring(0, j);
+        	}
+        }
+        return result;
+    }
+    
+    
 }
