@@ -9,19 +9,14 @@ import java.util.Stack;
 
 import binary_tree.TreeNode;
 import linked_list.ListNode;
+import sortUtil.Sort;
 
 public class Attempt {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		// System.out.print("Enter a Number:");
-		// int i = (int) System.in.read();
-		// String result = canWin(i) ? "win" : "lose";
-		// System.out.println("you will " + result);
-//		System.out.println(isAnagram(s, t));
-		char[][] board = {"7...4....".toCharArray(),"...865...".toCharArray(),".1.2.....".toCharArray(),
-				".....9...".toCharArray(),"....5.5..".toCharArray(),".........".toCharArray(),"......2..".toCharArray(),".........".toCharArray(),".........".toCharArray()};
-		System.out.println("you will " + isValidSudoku(board));
+		int[] nums = {3,0,3,0,2};
+		int[] res = twoSum1(nums, 6);
 	}
 
 	/**
@@ -348,6 +343,18 @@ public class Attempt {
 			}
 		}
 		return res;
+	}
+	//一种更清楚的非递归方法
+	public ListNode reverseList1(ListNode head) {
+		ListNode pre = null;
+		ListNode next = null;
+		while(head != null) {
+			next = head.next;
+			head.next = pre;
+			pre = head;
+			head = next;
+		}
+		return pre;
 	}
 
 	/**
@@ -900,6 +907,7 @@ public class Attempt {
    	 * PROBLEM 9. Palindrome Number
    	 */
     //TODO:没做出来。注意“翻转一个数”的做法！即：每次取原数最低一位，加上本身全体升一位。
+    //以下做法思想是，用rev保存x翻转后一半的数字，最后比较rev和x。
     public boolean isPalindrome(int x) {
         if (x<0 || (x!=0 && x%10==0)) return false;
         int rev = 0;
@@ -1395,6 +1403,192 @@ public class Attempt {
         }
         return result;
     }
+    /**
+	 * 234. Palindrome Linked List
+	 */
+    //没做出来。思想是，找到中间对称点，然后逆置后半条链表，再对比。
+    public boolean isPalindrome(ListNode head) {
+    	if(head == null){
+    		return true;
+    	}
+        ListNode fast = head;
+        ListNode slow = head;
+        while(fast.next != null && fast.next.next != null) {
+        	fast = fast.next.next;
+        	slow = slow.next;
+        }
+        slow.next = reverseList1(slow.next);
+        slow = slow.next;
+        while(slow != null) {
+        	if(slow.val != head.val) {
+        		return false;
+        	}
+        	slow = slow.next;
+        	head = head.next;
+        }
+    	return true;
+    }
+    /**
+	 * 67. Add Binary
+	 */
+    //没做出来。解法思想是：直接把数组转为数字，进行二进制运算，再转回字符串。
+    public String addBinary(String a, String b) {
+        if(a == null || a.isEmpty()) {
+        	return b;
+        }
+        if(b == null || b.isEmpty()) {
+        	return a;
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        char[] aArray = a.toCharArray();
+        char[] bArray = b.toCharArray();
+        
+        int i = aArray.length - 1;
+        int j = bArray.length - 1;
+        int aByte;
+        int bByte;
+        int carry = 0;
+        int result;
+        
+        while(i > -1 || j > -1 || carry == 1) {
+        	aByte = i > -1 ? Character.getNumericValue(aArray[i--]) : 0;
+        	bByte = j > -1 ? Character.getNumericValue(bArray[j--]) : 0;
+        	result = aByte ^ bByte ^ carry;
+        	carry = (aByte + bByte + carry) > 1 ? 1 : 0;
+        	sb.append(result);
+        }
+        
+        return sb.reverse().toString();
+    }
+    /**
+	 * 28. Implement strStr()
+	 */
+    //自己的代码有点啰嗦。下面有简洁代码
+    public int strStr(String haystack, String needle) {
+		if (haystack == null || needle == null) {
+			return -1;
+		}
+		if (needle.isEmpty()) {
+			return 0;
+		}
+		int i = 0;
+		int j = 0;
+		//如果剩余的haystack长度已经短于needle，则不存在
+		while (i < haystack.length() && haystack.length() - i >= needle.length()) {
+			// 找到第一个字母与needle相同的
+			while (i < haystack.length() && haystack.charAt(i) != needle.charAt(j)) {
+				i++;
+			}
+			// 检验接下来是否相同
+			while (i < haystack.length() && j < needle.length() && haystack.charAt(i) == needle.charAt(j)) {
+				i++;
+				j++;
+			}
+			if (j >= needle.length()) {
+				return i - needle.length();
+			} else {
+				i -= (j - 1);
+				j = 0;
+			}
+		}
+
+		return -1;
+    }
     
+    public int strStr1(String haystack, String needle) {
+    	  for (int i = 0; ; i++) {
+    	    for (int j = 0; ; j++) {
+    	      if (j == needle.length()) return i;
+    	      if (i + j == haystack.length()) return -1;//精髓所在。可以提前判断长度已经不足，不存在
+    	      if (needle.charAt(j) != haystack.charAt(i + j)) break;
+    	    }
+    	  }
+    	}
+    /**
+	 * 303. Range Sum Query - Immutable
+	 */
+    public class NumArray {
+
+    	int[] sums;
+        public NumArray(int[] nums) {
+        	if(nums == null || nums.length == 0) {
+        		sums = null;
+        	} else {
+                if(nums.length > 0) {
+                	sums = new int[nums.length];
+                	sums[0] = nums[0];
+                	for(int i = 1; i < nums.length; i++) {
+                    	sums[i] = sums[i - 1] + nums[i];
+                    }
+                }
+        	}
+        }
+
+        public int sumRange(int i, int j) {
+        	if(sums == null) {
+        		return 0;
+        	}
+        	if(i < 0 || j >sums.length || j > i) {
+        		return 0;
+        	}
+            return i == 0 ? sums[j] : sums[j] - sums[i-1];
+        }
+    }
+    /**
+	 * 1. Two Sum
+	 */
+    public int[] twoSum(int[] nums, int target) {
+		int[] res = new int[2];
+		for(int i = 0; i < nums.length; i++){
+			for(int j = i + 1; j < nums.length; j++) {
+				if(nums[i] + nums[j] == target) {
+					res[0] = i;
+					res[1] = j;
+				}
+			}
+		}
+		return res;
+    }
     
+    public static int[] twoSum1(int[] nums, int target) {
+    	int[] res = new int[2];
+    	Map<Integer, Integer> map = new HashMap<>();
+		for(int i = 0; i < nums.length; i++){
+			if(map.get(nums[i]) != null && nums[i] * 2 == target) {
+				res[1] = i;
+				res[0] = map.get(nums[i]);
+				return res;
+			} else {
+				map.put(nums[i], i);
+			}
+		}
+		for(int key : map.keySet()){
+			if(map.get(target - key) != null) {
+				if(map.get(target - key) < map.get(key)) {
+					res[0] = map.get(target - key);
+					res[1] = map.get(key);
+				} else {
+					res[1] = map.get(target - key);
+					res[0] = map.get(key);
+				}
+				
+				break;
+			}
+		}
+		return res;
+    }
+    public int[] twoSum2(int[] nums, int target) {
+        int[] result = new int[2];
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(target - nums[i])) {
+                result[1] = i;
+                result[0] = map.get(target - nums[i]);
+                return result;
+            }
+            map.put(nums[i], i);
+        }
+        return result;
+    }
 }
