@@ -1,4 +1,3 @@
-
 public class MediumProblems {
 
 	public static void main(String[] args) {
@@ -25,7 +24,5 @@ public class MediumProblems {
         }
         return res;
     }
-    
-    
-    
+
 }
