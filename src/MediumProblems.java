@@ -1,3 +1,5 @@
+import linked_list.ListNode;
+
 public class MediumProblems {
 
 	public static void main(String[] args) {
@@ -25,4 +27,44 @@ public class MediumProblems {
         return res;
     }
 
+    /**********下面做 Lined-List 相关题目*************/
+    /**
+	 * 328. Odd Even Linked List
+	 */
+    public ListNode oddEvenList(ListNode head) {
+    	if(head == null || head.next == null || head.next.next == null) {
+    		return head;
+    	}
+        int n = 0; // list length
+        ListNode p = head;
+        ListNode pre = head;
+        ListNode cut = head;
+        while(p != null) {
+        	++n;
+        	p = p.next;
+        }
+        p = head;
+        if(n % 2 == 0) {
+        	--n;
+        }
+        for(int i = 0; i < n-1; i++) {
+        	//找到插入点
+        	cut = cut.next;
+        }
+        int j = 1;
+        while(j < n) {
+        	if(j%2 != 0) {
+        		p = p.next;
+        	} else {
+        		pre.next = p.next;
+        		p.next = cut.next;
+        		cut.next = p;
+        		p = pre.next;
+        		pre = p;
+        		cut = cut.next;
+        	}
+        	++j;
+        }
+        return head;
+    }
 }
