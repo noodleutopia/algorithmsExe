@@ -9,7 +9,6 @@ import java.util.Stack;
 
 import binary_tree.TreeNode;
 import linked_list.ListNode;
-import sortUtil.Sort;
 
 public class EasyProblems {
 
@@ -1813,4 +1812,19 @@ public class EasyProblems {
     	return 0;
     }
     
+    /**
+	 * 344. Reverse String
+	 */
+    public static String reverseString(String s) {
+    	if(s == null || s.length() < 1) {
+    		return s;
+    	}
+        char[] array = s.toCharArray();
+        for(int i = 0; i < array.length/2; ++i) {
+        	char c = array[i];
+        	array[i] = array[array.length-i-1];
+        	array[array.length-i-1] = c;
+        }
+        return String.valueOf(array);
+    }
 }
