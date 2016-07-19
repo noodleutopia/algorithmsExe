@@ -1,3 +1,6 @@
+import java.util.HashSet;
+import java.util.Set;
+
 import linked_list.ListNode;
 
 public class MediumProblems {
@@ -67,4 +70,47 @@ public class MediumProblems {
         }
         return head;
     }
+    /**
+     * 260. Single Number III
+     */
+    public int[] singleNumberIII(int[] nums) {
+    	int[] res = new int[2];
+    	Set<Integer> set = new HashSet<Integer>();
+    	for(int i=0; i<nums.length; ++i) {
+    		if(set.contains(nums[i])) {
+    			set.remove(nums[i]);
+    		} else {
+    			set.add(nums[i]);
+    		}
+    	}
+    	int t = 0;
+    	for(int num : set) {
+    		res[t++] = num;
+    	}
+    	return res;
+    }
+    /**
+     * 更好的答案
+     */
+    public int[] singleNumberIII2(int[] nums) {
+        // Pass 1 : 
+        // Get the XOR of the two numbers we need to find
+        int temp = 0;
+        for(int i=0; i<nums.length; ++i) {
+        	temp ^= nums[i];
+        }
+        // Get its last set bit 注意，这是找到最右边的一个1
+        temp &= -temp;
+        //用temp将数组分为两组，分别在两组中异或得到两个数
+        int first = 0, second = 0;
+        for(int i=0; i<nums.length; ++i) {
+        	if((temp & nums[i]) > 0) {
+        		second ^= nums[i];
+        	} else {
+        		first ^= nums[i];
+        	}
+        }
+        return new int[]{first, second};
+    }
 }
+
