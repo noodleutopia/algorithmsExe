@@ -1,0 +1,110 @@
+/**
+ * #1092
+ */
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+	private static final int dir[][] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+	static int INF = Integer.MAX_VALUE;
+	static int n;
+	static int m;
+	static int tempAns;
+	static char[][] matrix;
+	static boolean[][] mark;
+	
+	//判断S是否相邻
+	static boolean judge(int x, int y) {
+		if(x < 0 || y < 0 || x >= n || y >= m) return false;
+		if(matrix[x][y] == 'S') return true;
+		return false;
+	}
+	//bfs中，判断是否可走
+	static boolean safe(int x, int y) {
+		if(x < 0 || y < 0 || x >= n || y >= m) return false;
+		if(mark[x][y]) return false;
+		if(matrix[x][y] == '#' || matrix[x][y] == 'S' || matrix[x][y] == 'P') return false;
+		return true;
+	}
+	//普通的bfs
+	static void bfs(int x, int y)
+	{
+	    mark = new boolean[105][105];
+		Node cur = new Node();
+		Node pre = new Node();
+		Queue<Node> q = new LinkedList<Node>();
+		cur.x = x;
+		cur.y = y;
+		cur.step = 0;
+		mark[x][y] = true;
+		q.add(cur);
+		while(!q.isEmpty()) {
+			pre = q.poll();
+			for(int k = 0; k < 4; k ++) {
+				cur = new Node();
+				cur.x = pre.x + dir[k][0];
+				cur.y = pre.y + dir[k][1];
+				cur.step = pre.step + 1;
+				if(safe(cur.x, cur.y)) {
+					System.out.println(cur +" Distance from "+ cur.x + " " +cur.y +" is:"+cur.step);
+					if(matrix[cur.x][cur.y] == 'H') {
+	                    tempAns = Math.min(cur.step, tempAns);
+						continue;
+					}
+					mark[cur.x][cur.y] = true;
+					q.add(cur);
+				}
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		n = in.nextInt();
+		m = in.nextInt();
+		in.nextLine();
+		matrix = new char[105][105];
+		// 读入矩阵
+		for (int i = 0; i < n; i++) {
+			matrix[i] = in.nextLine().toCharArray();
+		}
+		
+		int ans1, ans2;
+		int ans = INF;
+		for(int i = 0; i < n; i ++)
+			for(int j = 0; j < m; j ++) {
+				if(matrix[i][j] == 'S') {
+					boolean flag = false;
+	                int tx = 0, ty = 0;
+					for(int k = 0; k < 4; k ++)
+					{
+					    tx = i + dir[k][0];
+					    ty = j + dir[k][1];
+						flag = judge(tx, ty);
+						if(flag) break;
+					}
+					if(flag) {
+	                    tempAns = INF;
+						bfs(i, j);
+	                    ans1 =  tempAns;
+	                    tempAns = INF;
+	                    bfs(tx, ty);
+	                    ans2 = tempAns;
+	                    ans = Math.min(ans, ans1 + ans2);
+					}
+				}
+			}
+		if(ans >= INF) {
+			System.out.println("Hi and Ho will not have lunch.");
+		} else {
+			System.out.println(ans);
+		}
+
+	}
+	static class Node {
+		public int x;
+		public int y;
+		public int step;
+	}
+}
