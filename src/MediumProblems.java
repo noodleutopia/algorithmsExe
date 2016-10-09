@@ -112,5 +112,31 @@ public class MediumProblems {
         }
         return new int[]{first, second};
     }
+    
+    /**
+     * 376. Wiggle Subsequence
+     */
+    public int wiggleMaxLength(int[] nums) {
+        if(nums == null || nums.length < 1) {
+        	return 0;
+        }
+        if(nums.length == 1) {
+        	return 1;
+        }
+        int ans = 1;
+        int diff = nums[1] - nums[0];
+        if(diff != 0) {
+        	++ans;
+        }
+        for(int i=2; i<nums.length; ++i) {
+        	if(nums[i] != nums[i-1]) {
+        		if(diff *(nums[i] - nums[i-1]) <= 0) {
+            		++ans;
+            	}
+        		diff = nums[i] - nums[i-1];
+        	}
+        }
+        return ans;
+    }
 }
 
