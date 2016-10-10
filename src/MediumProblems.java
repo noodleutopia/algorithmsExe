@@ -7,7 +7,18 @@ public class MediumProblems {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		ListNode a = new ListNode(4);
+		ListNode b = new ListNode(19);
+		ListNode c = new ListNode(14);
+		ListNode d = new ListNode(5);
+		a.next = b;
+		b.next = c;
+		c.next = d;
+		ListNode p = sortList(a);
+		while(p!=null) {
+			System.out.print(p.val + " ");
+			p = p.next;
+		}
 	}
 	
 	/**
@@ -137,6 +148,63 @@ public class MediumProblems {
         	}
         }
         return ans;
+    }
+    
+    public static ListNode sortList(ListNode head) {
+        if(head == null || head.next == null) {
+            return head;
+        }
+        ListNode findRight = head;
+        while(findRight.next != null) {
+            findRight = findRight.next;
+        }
+        return quickSort(head, findRight);
+    }
+    
+    public static ListNode quickSort(ListNode left, ListNode right) {
+        if(left == right) {
+            return left;
+        }
+        ListNode insert = left;
+        ListNode pre = left;
+        ListNode p = left.next;
+        while(p != null && p != right.next) {
+            if(p.val < left.val) {
+                if(pre != insert) {
+                    pre.next = p.next;
+                    p.next = insert.next;
+                    insert.next = p;
+                    insert = p;
+                    p = pre.next;
+                } else {
+                    insert = insert.next;
+                    pre = p;
+                    p = p.next;
+                }
+            } else {
+                pre = p;
+                p = p.next;
+            }
+        }
+        pre = left;
+        if(insert != left) {
+            left = left.next;
+            pre.next = insert.next;
+            insert.next = pre;
+            right = pre;
+            while(right.next != null) {
+            	right = right.next;
+            }
+        }
+        
+        if(left != null) {
+            left = quickSort(left, insert);
+        }
+        if(pre.next != null) {
+            pre.next = quickSort(pre.next, right); 
+        }
+
+        return left;
     }
 }
 
